@@ -9,3 +9,6 @@ find / -name "<name>" 2> /dev/null
 
 # Run the last command as root
 sudo !!
+
+# Resize EC2 root volume to actual disk size
+sudo resize2fs /dev/xvda1
