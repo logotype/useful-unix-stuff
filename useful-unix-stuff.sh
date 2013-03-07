@@ -18,3 +18,6 @@ sudo chkconfig --levels 345 httpd on
 
 # Dump database to remote server using pipe (MySQL)
 mysqldump -u <user> -p<password> <database> | mysql --host=<server> --user=<user> --password=<password> <database>
+
+# Read textfile backwards, opposite of "more"
+less <file>
