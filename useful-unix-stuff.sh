@@ -21,3 +21,6 @@ mysqldump -u <user> -p<password> <database> | mysql --host=<server> --user=<user
 
 # Read textfile backwards, opposite of "more"
 less <file>
+
+# Get User-Agents from nginx logfile
+cat <file> | grep "GET" | awk -F'"' '{print $6}' | cut -d' ' -f1 | grep -E '^[[:alnum:]]' | sort | uniq -c | sort -rn
