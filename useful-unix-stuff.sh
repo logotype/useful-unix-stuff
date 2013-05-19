@@ -24,3 +24,12 @@ less <file>
 
 # Get User-Agents from nginx logfile
 cat <file> | grep "GET" | awk -F'"' '{print $6}' | cut -d' ' -f1 | grep -E '^[[:alnum:]]' | sort | uniq -c | sort -rn
+
+# Get CPU info
+grep "model name" /proc/cpuinfo
+
+# Get number of CPUs
+grep processor /proc/cpuinfo | wc -l
+
+# Get total memory (in MB)
+awk '/MemTotal/ {printf( "%.2fMB\n", $2 / 1024 )}' /proc/meminfo
