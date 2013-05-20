@@ -39,3 +39,6 @@ sudo ln -s /usr/local/bin/node /usr/bin/node
 sudo ln -s /usr/local/lib/node /usr/lib/node
 sudo ln -s /usr/local/bin/npm /usr/bin/npm
 sudo ln -s /usr/local/bin/node-waf /usr/bin/node-waf
+
+# Last 100 most used commands
+history | sed "s/^[0-9 ]*//" | sed "s/ *| */\n/g" | awk '{print $1}' | sort | uniq -c | sort -rn | head -n 100
