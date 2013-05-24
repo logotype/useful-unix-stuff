@@ -45,3 +45,6 @@ history | sed "s/^[0-9 ]*//" | sed "s/ *| */\n/g" | awk '{print $1}' | sort | un
 
 # Use directory location of bash script if running from elsewhere
 cd ${0%/*}
+
+# Clear console in Node.js (*nix)
+console.log('\033[2J');
