@@ -2,7 +2,7 @@
 /sbin/ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'
 
 # Get IP address (All interfaces):
-/sbin/ifconfig |grep -B1 "inet addr" |awk '{ if ( $1 == "inet" ) { print $2 } else if ( $2 == "Link" ) { printf "%s:" ,$1 } }' |awk -F: '{ print $1 ": " $3 }'
+/sbin/ifconfig | grep -B1 "inet addr" | awk '{ if ( $1 == "inet" ) { print $2 } else if ( $2 == "Link" ) { printf "%s:" ,$1 } }' | awk -F: '{ print $1 ": " $3 }'
 
 # Find file by name and ignore errors
 find / -name "<name>" 2> /dev/null
@@ -48,3 +48,6 @@ cd ${0%/*}
 
 # Clear console in Node.js (*nix)
 console.log('\033[2J');
+
+# Just because it's funny
+alias please='sudo'
