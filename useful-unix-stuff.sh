@@ -34,6 +34,9 @@ grep processor /proc/cpuinfo | wc -l
 # Get total memory (in MB)
 awk '/MemTotal/ {printf( "%.2fMB\n", $2 / 1024 )}' /proc/meminfo
 
+# Get files over 50MB
+find <path> -type f -size +50000k -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
+
 # When "sudo npm" fails on CentOS EC2
 sudo ln -s /usr/local/bin/node /usr/bin/node
 sudo ln -s /usr/local/lib/node /usr/lib/node
