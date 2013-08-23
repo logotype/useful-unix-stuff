@@ -4,9 +4,6 @@
 # Get IP address (All interfaces):
 /sbin/ifconfig | grep -B1 "inet addr" | awk '{ if ( $1 == "inet" ) { print $2 } else if ( $2 == "Link" ) { printf "%s:" ,$1 } }' | awk -F: '{ print $1 ": " $3 }'
 
-# Find file by name and ignore errors
-find / -name "<name>" 2> /dev/null
-
 # Run the last command as root
 sudo !!
 
@@ -36,6 +33,12 @@ awk '/MemTotal/ {printf( "%.2fMB\n", $2 / 1024 )}' /proc/meminfo
 
 # Get files over 50MB
 find <path> -type f -size +50000k -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
+
+# Find file by name and ignore errors
+find / -name "<name>" 2> /dev/null
+
+# Find files containing string
+grep -Ril "<string>" ./
 
 # When "sudo npm" fails on CentOS EC2
 sudo ln -s /usr/local/bin/node /usr/bin/node
