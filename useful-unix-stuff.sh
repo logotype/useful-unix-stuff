@@ -40,6 +40,13 @@ find / -name "<name>" 2> /dev/null
 # Find files containing string
 grep -Ril "<string>" ./
 
+# Bandwidth trottling, enabling 150kB/s on port 80
+sudo ipfw pipe 1 config bw 15KByte/s
+sudo ipfw add 1 pipe 1 src-port 80
+
+# Bandwidth trottling, enabling
+sudo ipfw delete 1
+
 # When "sudo npm" fails on CentOS EC2
 sudo ln -s /usr/local/bin/node /usr/bin/node
 sudo ln -s /usr/local/lib/node /usr/lib/node
@@ -54,6 +61,9 @@ cd ${0%/*}
 
 # Clear console in Node.js (*nix)
 console.log('\033[2J');
+
+# Send UDP message to a specific host and port using NetCat
+nc -u <ip> <port> <<< '<message>'
 
 # Just because it's funny
 alias please='sudo'
