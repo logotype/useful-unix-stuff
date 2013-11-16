@@ -65,5 +65,17 @@ console.log('\033[2J');
 # Send UDP message to a specific host and port using NetCat
 nc -u <ip> <port> <<< '<message>'
 
+# 1. OpenCV: Compile with C++11
+CC=clang CXX=clang++ CFLAGS='-m64' CXXFLAGS='-std=c++0x -stdlib=libc++ -m64 -Wno-c++11-narrowing' cmake -G "Unix Makefiles" -D CMAKE_INSTALL_PREFIX=/Users/logotype/Library/Developer/opencv/ -D WITH_QUICKTIME=OFF -D BUILD_EXAMPLES=OFF -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_CARBON=OFF -D CMAKE_OSX_ARCHITECTURES=x86_64 -D BUILD_PERF_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D BUILD_opencv_legacy=NO ..
+
+# 2. OpenCV: Build
+make -j8
+
+# 1. Compile Boost C++ library with C++11 (as static)
+./bootstrap.sh --with-toolset=clang
+
+# 2. Compile Boost C++ library with C++11 (as static)
+./b2 toolset=clang cxxflags="-std=c++11 -stdlib=libc++" linkflags="-stdlib=libc++" link=static
+
 # Just because it's funny
 alias please='sudo'
