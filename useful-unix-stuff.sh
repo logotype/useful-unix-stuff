@@ -40,6 +40,9 @@ find / -name "<name>" 2> /dev/null
 # Find files containing string
 grep -Ril "<string>" ./
 
+# Download all files listed in urls.txt
+xargs -n 1 curl -O < urls.txt
+
 # Bandwidth trottling, enabling 150kB/s on port 80
 sudo ipfw pipe 1 config bw 15KByte/s
 sudo ipfw add 1 pipe 1 src-port 80
@@ -66,7 +69,7 @@ console.log('\033[2J');
 nc -u <ip> <port> <<< '<message>'
 
 # 1. OpenCV: Compile with C++11
-CC=clang CXX=clang++ CFLAGS='-m64' CXXFLAGS='-std=c++0x -stdlib=libc++ -m64 -Wno-c++11-narrowing' cmake -G "Unix Makefiles" -D CMAKE_INSTALL_PREFIX=/Users/logotype/Library/Developer/opencv/ -D WITH_QUICKTIME=OFF -D BUILD_EXAMPLES=OFF -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_CARBON=OFF -D CMAKE_OSX_ARCHITECTURES=x86_64 -D BUILD_PERF_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D BUILD_opencv_legacy=NO ..
+CC=clang CXX=clang++ CFLAGS='-m64' CXXFLAGS='-std=c++0x -stdlib=libc++ -m64 -Wno-c++11-narrowing' cmake -G "Unix Makefiles" -D CMAKE_INSTALL_PREFIX=/Users/<username>/Library/Developer/opencv/ -D WITH_QUICKTIME=OFF -D BUILD_EXAMPLES=OFF -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_CARBON=OFF -D CMAKE_OSX_ARCHITECTURES=x86_64 -D BUILD_PERF_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D BUILD_opencv_legacy=NO ..
 
 # 2. OpenCV: Build
 make -j8
