@@ -56,6 +56,15 @@ sudo ln -s /usr/local/lib/node /usr/lib/node
 sudo ln -s /usr/local/bin/npm /usr/bin/npm
 sudo ln -s /usr/local/bin/node-waf /usr/bin/node-waf
 
+# ~/.ssh/config example (easily SSH to host with "ssh example")
+# Host example
+# Hostname 111.222.333.444
+# User ec2-user
+# IdentityFile ~/.ssh/example.pem
+
+# SSH copy from remote host to local (<example> is the Host in ~/.ssh/config)
+scp example:/some/path/on/remove/server/file.ext localfile.ext
+
 # Last 100 most used commands
 history | sed "s/^[0-9 ]*//" | sed "s/ *| */\n/g" | awk '{print $1}' | sort | uniq -c | sort -rn | head -n 100
 
@@ -69,15 +78,13 @@ console.log('\033[2J');
 nc -u <ip> <port> <<< '<message>'
 
 # 1. OpenCV: Compile with C++11
-CC=clang CXX=clang++ CFLAGS='-m64' CXXFLAGS='-std=c++0x -stdlib=libc++ -m64 -Wno-c++11-narrowing' cmake -G "Unix Makefiles" -D CMAKE_INSTALL_PREFIX=/Users/<username>/Library/Developer/opencv/ -D WITH_QUICKTIME=OFF -D BUILD_EXAMPLES=OFF -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_CARBON=OFF -D CMAKE_OSX_ARCHITECTURES=x86_64 -D BUILD_PERF_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D BUILD_opencv_legacy=NO ..
-
 # 2. OpenCV: Build
+CC=clang CXX=clang++ CFLAGS='-m64' CXXFLAGS='-std=c++0x -stdlib=libc++ -m64 -Wno-c++11-narrowing' cmake -G "Unix Makefiles" -D CMAKE_INSTALL_PREFIX=/Users/<username>/Library/Developer/opencv/ -D WITH_QUICKTIME=OFF -D BUILD_EXAMPLES=OFF -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_CARBON=OFF -D CMAKE_OSX_ARCHITECTURES=x86_64 -D BUILD_PERF_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D BUILD_opencv_legacy=NO ..
 make -j8
 
 # 1. Compile Boost C++ library with C++11 (as static)
-./bootstrap.sh --with-toolset=clang
-
 # 2. Compile Boost C++ library with C++11 (as static)
+./bootstrap.sh --with-toolset=clang
 ./b2 toolset=clang cxxflags="-std=c++11 -stdlib=libc++" linkflags="-stdlib=libc++" link=static
 
 # Just because it's funny
