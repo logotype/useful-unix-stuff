@@ -68,8 +68,11 @@ scp example:/some/path/on/remove/server/file.ext localfile.ext
 # Last 100 most used commands
 history | sed "s/^[0-9 ]*//" | sed "s/ *| */\n/g" | awk '{print $1}' | sort | uniq -c | sort -rn | head -n 100
 
-# Use directory location of bash script if running from elsewhere
+# Determine directory where this script is running from (1)
 cd ${0%/*}
+
+# Determine directory where this script is running from (2)
+script_dir=$(dirname $(echo $0 | sed -e "s,^\([^/]\),$(pwd)/\1,"))
 
 # Clear console in Node.js (*nix)
 console.log('\033[2J');
