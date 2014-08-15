@@ -95,7 +95,7 @@ make -j8
 # Just because it's funny
 alias please='sudo'
 
-# Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)"
+# Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
 # Enable subpixel font rendering on non-Apple LCDs"
@@ -119,7 +119,7 @@ defaults write NSGlobalDomain AppleEnableMenuBarTransparency -bool false
 # defaults write com.apple.menuextra.battery ShowPercent -string "NO"
 defaults write com.apple.menuextra.battery ShowTime -string "YES"
 
-# # Always show scrollbars"
+# # Always show scrollbars
 defaults write NSGlobalDomain AppleShowScrollBars -string "Auto"
 
 # Allow quitting Finder via ⌘ + Q; doing so will also hide desktop icons
