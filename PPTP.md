@@ -49,7 +49,7 @@ On Rackspace, enable incoming connections on TCP 1723:
 $ sudo /sbin/iptables -I INPUT 1 -p tcp --dport 1723 -j ACCEPT
 ```
 
-To ensure the NAT configuration be loaded when the instance starts, add in your `/etc/rc.local` the command `iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE`.
+To ensure the NAT configuration be loaded when the instance starts, add in your `/etc/rc.local` the command `iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE` and `iptables -I INPUT 1 -p tcp --dport 1723 -j ACCEPT`.
 
 Start the pptpd service, and set it to automatically start when the instance starts:
 
