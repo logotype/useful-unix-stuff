@@ -95,6 +95,14 @@ make -j8
 # Just because it's funny
 alias please='sudo'
 
+# List all files installed by package (CentOS)
+rpm -ql <package>
+
+# Search for filename containing "options" installed by package "pptpd" (CentOS)
+rpm -ql pptpd | grep options
+
+# ---------------------------- OSX SPECIFIC HACKS BELOW ----------------------------
+
 # Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
