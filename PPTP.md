@@ -1,7 +1,13 @@
 Create PPTP VPN server
 ----------------------
 
+Amazon Web Services:
+
 __Enable TCP port 1723 of the EC2 instance’s Security Group__
+
+Rackspace:
+
+__`/usr/sbin/iptables-restore < /etc/iptables.rules` and `chmod +x /etc/rc.d/rc.local`__
 
 Install pptpd:
 
