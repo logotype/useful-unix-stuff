@@ -101,6 +101,9 @@ rpm -ql <package>
 # Search for filename containing "options" installed by package "pptpd" (CentOS)
 rpm -ql pptpd | grep options
 
+# Connect to VPN service (OSX) ref: http://superuser.com/questions/358513/start-configured-vpn-from-command-line-osx
+scutil --nc start <name_of_service> --user <vpn_username> --password <vpn_password>
+
 # ---------------------------- OSX SPECIFIC HACKS BELOW ----------------------------
 
 # Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)
