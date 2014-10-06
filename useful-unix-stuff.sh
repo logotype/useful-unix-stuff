@@ -104,6 +104,18 @@ rpm -ql pptpd | grep options
 # Connect to VPN service (OSX) ref: http://superuser.com/questions/358513/start-configured-vpn-from-command-line-osx
 scutil --nc start <name_of_service> --user <vpn_username> --password <vpn_password>
 
+# Level3 public recursive DNS
+4.2.2.1
+4.2.2.2
+4.2.2.3
+4.2.2.4
+4.2.2.5
+4.2.2.6
+
+# Google public recursive DNS
+8.8.8.8
+8.8.4.4
+
 # ---------------------------- OSX SPECIFIC HACKS BELOW ----------------------------
 
 # Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)
