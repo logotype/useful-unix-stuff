@@ -104,6 +104,9 @@ rpm -ql pptpd | grep options
 # Connect to VPN service (OSX) ref: http://superuser.com/questions/358513/start-configured-vpn-from-command-line-osx
 scutil --nc start <name_of_service> --user <vpn_username> --password <vpn_password>
 
+# Check current DNS servers used
+cat /etc/resolv.conf
+
 # Level3 public recursive DNS
 4.2.2.1
 4.2.2.2
