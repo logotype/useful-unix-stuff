@@ -95,6 +95,9 @@ make -j8
 # Just because it's funny
 alias please='sudo'
 
+# Sum all numbers in a file using awk
+awk '{ sum += $1 } END { print sum }' <file>
+
 # List all files installed by package (CentOS)
 rpm -ql <package>
 
