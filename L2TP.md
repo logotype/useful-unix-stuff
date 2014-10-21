@@ -3,7 +3,7 @@ Create L2TP/IPSec VPN server (Ubuntu 14.04 LTS)
 
 _Replace **`<SERVER-IP>`** with your servers external, public IP._
 
-Install ppp openswan and xl2tpd:
+Install services:
 
 ```bash
 $ apt-get install openswan xl2tpd ppp lsof
@@ -32,14 +32,14 @@ $ for vpn in /proc/sys/net/ipv4/conf/*; do echo 0 > $vpn/accept_redirects; echo 
 $ sysctl -p
 ```
 
-Edit `/etc/ipsec.conf`:
+Edit `/etc/rc.local` to run the following at boot:
 
 ```bash
 for vpn in /proc/sys/net/ipv4/conf/*; do echo 0 > $vpn/accept_redirects; echo 0 > $vpn/send_redirects; done
 iptables -t nat -A POSTROUTING -j SNAT --to-source <SERVER-IP> -o eth+
 ```
 
-Edit `/etc/rc.local` and add this:
+Edit `/etc/ipsec.conf`:
 
 ```bash
 version 2
@@ -118,4 +118,4 @@ Verify everything is okay:
 $ ipsec verify
 ```
 
-Check `/var/log/messages` for error messages.
+Check `/var/log/syslog` for error messages.
