@@ -1,9 +1,7 @@
 Create L2TP/IPSec VPN server (Ubuntu 14.04 LTS)
 ----------------------
 
-Rackspace:
-
-__`/usr/sbin/iptables-restore < /etc/iptables.rules` and `chmod +x /etc/rc.d/rc.local`__
+_Replace <SERVER-IP> with your servers external, public IP._
 
 Install ppp openswan and xl2tpd:
 
@@ -13,7 +11,7 @@ $ apt-get install openswan xl2tpd ppp lsof
 Firewall and sysctl:
 
 ```bash
-$ iptables -t nat -A POSTROUTING -j SNAT --to-source **server-ip** -o eth+
+$ iptables -t nat -A POSTROUTING -j SNAT --to-source <SERVER-IP> -o eth+
 $ sysctl -p
 ```
 
@@ -38,7 +36,7 @@ Edit `/etc/ipsec.conf`:
 
 ```bash
 for vpn in /proc/sys/net/ipv4/conf/*; do echo 0 > $vpn/accept_redirects; echo 0 > $vpn/send_redirects; done
-iptables -t nat -A POSTROUTING -j SNAT --to-source **server-ip** -o eth+
+iptables -t nat -A POSTROUTING -j SNAT --to-source <SERVER-IP> -o eth+
 ```
 
 Edit `/etc/rc.local` and add this:
@@ -87,7 +85,7 @@ conn L2TP-PSK-noNAT
     type=transport
     # Because we use l2tp as tunnel protocol
 
-    left=**server-ip**
+    left=<SERVER-IP>
     # Edit your servers external IP here
 
     leftprotoport=17/1701
@@ -105,14 +103,14 @@ conn L2TP-PSK-noNAT
 Edit `/etc/ipsec.secrets` to add the shared secret:
 
 ```bash
-**server-ip**  %any:   PSK "**some-secret-string-here**"
+<SERVER-IP>  %any:   PSK "**some-secret-string-here**"
 ```
 
 To add VPN users, edit `/etc/ppp/chap-secrets`:
 
 ```bash
 # client		servers		secret		IP addresses
-**username**		l2tpd		**password**		*
+username		l2tpd		password	*
 ```
 
 Verify everything is okay:
