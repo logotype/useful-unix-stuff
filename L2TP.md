@@ -8,14 +8,11 @@ Install services:
 ```bash
 $ apt-get install openswan xl2tpd ppp lsof
 ```
-Enable incomming connections on TCP port 1701
-```bash
-$ iptables -I INPUT 1 -p tcp --dport 1701 -j ACCEPT
-```
 
 Firewall and sysctl:
 
 ```bash
+$ iptables -I INPUT 1 -p tcp --dport 1701 -j ACCEPT
 $ iptables -t nat -A POSTROUTING -j SNAT --to-source <SERVER-IP> -o eth+
 $ sysctl -p
 ```
