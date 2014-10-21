@@ -49,6 +49,9 @@ xargs -n 1 curl -O < urls.txt
 sudo ipfw pipe 1 config bw 15KByte/s
 sudo ipfw add 1 pipe 1 src-port 80
 
+# Monitor pppd log
+tail -f /var/log/syslog | grep pppd
+
 # Bandwidth trottling, enabling
 sudo ipfw delete 1
 
