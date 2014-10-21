@@ -1,7 +1,7 @@
 Create L2TP/IPSec VPN server (Ubuntu 14.04 LTS)
 ----------------------
 
-_Replace **<SERVER-IP>** with your servers external, public IP._
+_Replace **`<SERVER-IP>`** with your servers external, public IP._
 
 Install ppp openswan and xl2tpd:
 
