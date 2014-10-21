@@ -42,7 +42,7 @@ iptables -t nat -A POSTROUTING -j SNAT --to-source <SERVER-IP> -o eth+
 Edit `/etc/rc.local` and add this:
 
 ```bash
-version 2 # conforms to second version of ipsec.conf specification
+version 2
 
 config setup
     dumpdir=/var/run/pluto/
@@ -52,8 +52,7 @@ config setup
     # Whether to accept/offer to support NAT (NAPT, also known as "IP Masqurade") workaround for IPsec
 
     virtual_private=%v4:10.0.0.0/8,%v4:192.168.0.0/16,%v4:172.16.0.0/12,%v6:fd00::/8,%v6:fe80::/10
-    # Contains the networks that are allowed as subnet for the remote client (the address ranges that may live behind a NAT router through which a client)
-connects.
+    # Contains the networks that are allowed as subnet for the remote client (the address ranges that may live behind a NAT router through which a client) connects.
 
     protostack=netkey
     # Decide which protocol stack is going to be used
