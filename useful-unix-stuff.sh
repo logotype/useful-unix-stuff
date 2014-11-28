@@ -18,6 +18,9 @@ sudo chkconfig --levels 345 httpd on
 # Dump database to remote server using pipe (MySQL)
 mysqldump -u <user> -p<password> <database> | mysql --host=<server> --user=<user> --password=<password> <database>
 
+# If mysqld can't start ("MySQL Daemon Failed to Start"), on CentOS 6.x with <= 512MB RAM, edit /etc/my.cnf under [mysqld]
+performance_schema=off
+
 # Read textfile backwards, opposite of "more"
 less <file>
 
