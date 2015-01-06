@@ -134,6 +134,10 @@ cat /etc/resolv.conf
 8.8.8.8
 8.8.4.4
 
+# PHP-FPM session (/etc/php-fpm.d/www.conf)
+php_value[session.save_handler] = files
+php_value[session.save_path] = /var/lib/php/session
+
 # ---------------------------- OSX SPECIFIC HACKS BELOW ----------------------------
 
 # Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)
