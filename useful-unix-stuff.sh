@@ -21,6 +21,9 @@ mysqldump -u <user> -p<password> <database> | mysql --host=<server> --user=<user
 # If mysqld can't start ("MySQL Daemon Failed to Start"), on CentOS 6.x with <= 512MB RAM, edit /etc/my.cnf under [mysqld]
 performance_schema=off
 
+# Mirror site with wget
+wget -p -r -l4 -E -k -nH <url>
+
 # Read textfile backwards, opposite of "more"
 less <file>
 
