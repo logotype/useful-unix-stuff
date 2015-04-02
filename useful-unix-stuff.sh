@@ -1,5 +1,11 @@
 #!/usr/bin/env sh
 
+# Find "CNNIC ROOT" SHA1 (CA root certificate on OSX)
+sudo security find-certificate -a -Z -c "CNNIC ROOT" /System/Library/Keychains/SystemRootCertificates.keychain | grep SHA-1
+
+# Delete "CNNIC ROOT" CA root certificate (find the hash using the above command)
+sudo security delete-certificate -t -Z 8BAF4C9B1DF02A92F7DA128EB91BACF498604B6F /System/Library/Keychains/SystemRootCertificates.keychain
+
 # Get IP address (Ethernet 0):
 /sbin/ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'
 
