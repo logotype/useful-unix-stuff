@@ -110,6 +110,9 @@ make -j8
 # Just because it's funny
 alias please='sudo'
 
+# List files displaying permissions in octal values
+alias lso="ls -alG | awk '{k=0;for(i=0;i<=8;i++)k+=((substr(\$1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(\" %0o \",k);print}'"
+
 # Sum all numbers in a file using awk
 awk '{ sum += $1 } END { print sum }' <file>
 
@@ -118,6 +121,10 @@ rpm -ql <package>
 
 # Search for filename containing "options" installed by package "pptpd" (CentOS)
 rpm -ql pptpd | grep options
+
+# ipsec newhostkey hangs: ipsec newhostkey --configdir /etc/ipsec.d --output ~/ipsec.secrets --bits 4096
+mv /dev/random /dev/chaos
+ln -s /dev/urandom /dev/random
 
 # Connect to VPN service (OSX) ref: http://superuser.com/questions/358513/start-configured-vpn-from-command-line-osx
 scutil --nc start <name_of_service> --user <vpn_username> --password <vpn_password>
