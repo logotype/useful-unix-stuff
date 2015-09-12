@@ -37,6 +37,9 @@ echo 0 > /proc/sys/net/ipv4/conf/default/accept_redirects
 echo 0 > /proc/sys/net/ipv4/conf/eth0/accept_redirects
 echo 0 > /proc/sys/net/ipv4/conf/lo/accept_redirects
 
+# Enable IPV4 forwarding
+echo 1 > /proc/sys/net/ipv4/ip_forward
+
 iptables -t nat -A POSTROUTING -j SNAT --to-source <SERVER-IP> -o eth0
 ```
 
