@@ -1,17 +1,5 @@
 #!/usr/bin/env sh
 
-# Find "CNNIC ROOT" SHA1 (CA root certificate on OSX)
-sudo security find-certificate -a -Z -c "CNNIC ROOT" /System/Library/Keychains/SystemRootCertificates.keychain | grep SHA-1
-
-# Delete "CNNIC ROOT" CA root certificate (find the hash using the above command)
-sudo security delete-certificate -t -Z 8BAF4C9B1DF02A92F7DA128EB91BACF498604B6F /System/Library/Keychains/SystemRootCertificates.keychain
-
-# Get IP address (Ethernet 0):
-/sbin/ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'
-
-# Get IP address (All interfaces):
-/sbin/ifconfig | grep -B1 "inet addr" | awk '{ if ( $1 == "inet" ) { print $2 } else if ( $2 == "Link" ) { printf "%s:" ,$1 } }' | awk -F: '{ print $1 ": " $3 }'
-
 # Run the last command as root
 sudo !!
 
@@ -24,11 +12,11 @@ sudo chkconfig --levels 345 httpd on
 # Dump database to remote server using pipe (MySQL)
 mysqldump -u <user> -p<password> <database> | mysql --host=<server> --user=<user> --password=<password> <database>
 
-# If mysqld can't start ("MySQL Daemon Failed to Start"), on CentOS 6.x with <= 512MB RAM, edit /etc/my.cnf under [mysqld]
-performance_schema=off
-
 # Mirror site with wget
 wget -p -r -l4 -E -k -nH <url>
+
+# Download all files listed in urls.txt
+xargs -n 1 curl -O < urls.txt
 
 # Read textfile backwards, opposite of "more"
 less <file>
@@ -54,24 +42,10 @@ find / -name "<name>" 2> /dev/null
 # Find files containing string
 grep -Ril "<string>" ./
 
-# Download all files listed in urls.txt
-xargs -n 1 curl -O < urls.txt
-
-# Bandwidth trottling, enabling 150kB/s on port 80
-sudo ipfw pipe 1 config bw 15KByte/s
-sudo ipfw add 1 pipe 1 src-port 80
-
-# Monitor pppd log
-tail -f /var/log/syslog | grep pppd
-
-# Bandwidth trottling, enabling
-sudo ipfw delete 1
-
 # When "sudo npm" fails on CentOS EC2
 sudo ln -s /usr/local/bin/node /usr/bin/node
 sudo ln -s /usr/local/lib/node /usr/lib/node
 sudo ln -s /usr/local/bin/npm /usr/bin/npm
-sudo ln -s /usr/local/bin/node-waf /usr/bin/node-waf
 
 # ~/.ssh/config example (easily SSH to host with "ssh example")
 # Host example
@@ -94,9 +68,6 @@ script_dir=$(dirname $(echo $0 | sed -e "s,^\([^/]\),$(pwd)/\1,"))
 # Clear console in Node.js (*nix)
 console.log('\033[2J');
 
-# Send UDP message to a specific host and port using NetCat
-nc -u <ip> <port> <<< '<message>'
-
 # 1. OpenCV: Compile with C++11
 # 2. OpenCV: Build
 CC=clang CXX=clang++ CFLAGS='-m64' CXXFLAGS='-std=c++0x -stdlib=libc++ -m64 -Wno-c++11-narrowing' cmake -G "Unix Makefiles" -D CMAKE_INSTALL_PREFIX=/Users/<username>/Library/Developer/opencv/ -D WITH_QUICKTIME=OFF -D BUILD_EXAMPLES=OFF -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_CARBON=OFF -D CMAKE_OSX_ARCHITECTURES=x86_64 -D BUILD_PERF_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D BUILD_opencv_legacy=NO ..
@@ -110,7 +81,7 @@ make -j8
 # Just because it's funny
 alias please='sudo'
 
-# List files displaying permissions in octal values
+# List files displaying permissions in octal values (755 drwxr-xr-x, 644 -rw-r--r--)
 alias lso="ls -alG | awk '{k=0;for(i=0;i<=8;i++)k+=((substr(\$1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(\" %0o \",k);print}'"
 
 # Sum all numbers in a file using awk
@@ -122,6 +93,21 @@ rpm -ql <package>
 # Search for filename containing "options" installed by package "pptpd" (CentOS)
 rpm -ql pptpd | grep options
 
+# Get IP address (Ethernet 0):
+/sbin/ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'
+
+# Get IP address (All interfaces):
+/sbin/ifconfig | grep -B1 "inet addr" | awk '{ if ( $1 == "inet" ) { print $2 } else if ( $2 == "Link" ) { printf "%s:" ,$1 } }' | awk -F: '{ print $1 ": " $3 }'
+
+# Send UDP message to a specific host and port using NetCat
+nc -u <ip> <port> <<< '<message>'
+
+# Check if TCP or UDP port is open (/dev/tcp/host/port or /dev/udp/host/port)
+cat < /dev/tcp/127.0.0.1/22
+
+# Scan for RDP (10.0.1.0 - 10.0.1.255)
+nmap -p3389 -P0 -sS 10.0.1.0/24 | grep "scan" | cut -d "(" -f2 | cut -d ")" -f1
+
 # ipsec newhostkey hangs: ipsec newhostkey --configdir /etc/ipsec.d --output ~/ipsec.secrets --bits 4096
 mv /dev/random /dev/chaos
 ln -s /dev/urandom /dev/random
@@ -129,11 +115,18 @@ ln -s /dev/urandom /dev/random
 # Connect to VPN service (OSX) ref: http://superuser.com/questions/358513/start-configured-vpn-from-command-line-osx
 scutil --nc start <name_of_service> --user <vpn_username> --password <vpn_password>
 
+# Monitor pppd log
+tail -f /var/log/syslog | grep pppd
+
+# Bandwidth trottling, enabling 150kB/s on port 80
+sudo ipfw pipe 1 config bw 15KByte/s
+sudo ipfw add 1 pipe 1 src-port 80
+
+# Bandwidth trottling, disable
+sudo ipfw delete 1
+
 # Check if MTU size is wrong (fragmented packets)
 tcpdump -i eth0 -s 1500 port not 22 | strings | grep "frag"
-
-# Check if TCP or UDP port is open (/dev/tcp/host/port or /dev/udp/host/port)
-cat < /dev/tcp/127.0.0.1/22
 
 # Check current DNS servers used
 cat /etc/resolv.conf
@@ -150,9 +143,5 @@ cat /etc/resolv.conf
 8.8.8.8
 8.8.4.4
 
-# PHP-FPM session (/etc/php-fpm.d/www.conf)
-php_value[session.save_handler] = files
-php_value[session.save_path] = /var/lib/php/session
-
 # Convert PNG image sequence (image-000.png) to H.264 using ffmpeg
-ffmpeg -i ./image-%03d.png -f mp4 -vcodec libx264 -pix_fmt yuv420p output.mp4
+ffmpeg -i ./image-%03d.png -f mp4 -vcodec libx264 -pix_fmt yuv420p <filename>.mp4
