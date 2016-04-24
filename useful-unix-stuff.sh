@@ -118,8 +118,8 @@ scutil --nc start <name_of_service> --user <vpn_username> --password <vpn_passwo
 # Monitor pppd log
 tail -f /var/log/syslog | grep pppd
 
-# Bandwidth trottling, enabling 150kB/s on port 80
-sudo ipfw pipe 1 config bw 15KByte/s
+# Bandwidth trottling, enabling 150kB/s on port 80 (removed from recent versions of OSX)
+sudo ipfw pipe 1 config bw 150KByte/s
 sudo ipfw add 1 pipe 1 src-port 80
 
 # Bandwidth trottling, disable
