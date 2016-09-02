@@ -56,6 +56,9 @@ sudo ln -s /usr/local/bin/npm /usr/bin/npm
 # SSH copy from remote host to local (<example> is the Host in ~/.ssh/config)
 scp example:/some/path/on/remove/server/file.ext localfile.ext
 
+# rsync from local to remote host, excluding mac files (<example> is the Host in ~/.ssh/config)
+rsync -rave "ssh -i /Users/$USER/.ssh/example.pem" --exclude ".DS_Store" -r . example:~/some-directory-here
+
 # Last 100 most used commands
 history | sed "s/^[0-9 ]*//" | sed "s/ *| */\n/g" | awk '{print $1}' | sort | uniq -c | sort -rn | head -n 100
 
@@ -142,6 +145,12 @@ cat /etc/resolv.conf
 # Google public recursive DNS
 8.8.8.8
 8.8.4.4
+
+# Like top, but for networking (built in Mac OS)
+nettop
+
+# Like top, but for disk I/O
+iotop
 
 # Convert PNG image sequence (image-000.png) to H.264 using ffmpeg
 ffmpeg -i ./image-%03d.png -f mp4 -vcodec libx264 -pix_fmt yuv420p <filename>.mp4
