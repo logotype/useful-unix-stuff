@@ -6,6 +6,12 @@ sudo !!
 # Resize EC2 root volume to actual disk size
 sudo resize2fs /dev/xvda1
 
+# Mount options for /etc/fstab
+UUID=<UUID> /home/ec2-user/<some mount path> ext4 defaults,nofail 0 2
+
+# List drives by UUID
+ls -l /dev/disk/by-uuid
+
 # Start HTTPD at boot (CentOS)
 sudo chkconfig --levels 345 httpd on
 
