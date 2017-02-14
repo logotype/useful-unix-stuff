@@ -18,6 +18,9 @@ wget -p -r -l4 -E -k -nH <url>
 # Download all files listed in urls.txt
 xargs -n 1 curl -O < urls.txt
 
+# Move many files (millions of files..)
+echo *.ext | xargs mv -t <path>
+
 # Read textfile backwards, opposite of "more"
 less <file>
 
