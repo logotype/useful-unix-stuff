@@ -30,6 +30,9 @@ echo *.ext | xargs mv -t <path>
 # Read textfile backwards, opposite of "more"
 less <file>
 
+# Clear contents of file
+truncate -s 0 <file>
+
 # Get User-Agents from nginx logfile
 cat <file> | grep "GET" | awk -F'"' '{print $6}' | cut -d' ' -f1 | grep -E '^[[:alnum:]]' | sort | uniq -c | sort -rn
 
