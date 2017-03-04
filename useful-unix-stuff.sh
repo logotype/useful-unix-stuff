@@ -33,6 +33,9 @@ less <file>
 # Clear contents of file
 truncate -s 0 <file>
 
+# Redirect stdout and stderr to log file with timestamps
+./some_script.sh 2>&1 | gawk '{ print strftime("[%Y-%m-%d %H:%M:%S]"), $0 }' >> some_script.log
+
 # Get User-Agents from nginx logfile
 cat <file> | grep "GET" | awk -F'"' '{print $6}' | cut -d' ' -f1 | grep -E '^[[:alnum:]]' | sort | uniq -c | sort -rn
 
@@ -53,11 +56,6 @@ find / -name "<name>" 2> /dev/null
 
 # Find files containing string
 grep -Ril "<string>" ./
-
-# When "sudo npm" fails on CentOS EC2
-sudo ln -s /usr/local/bin/node /usr/bin/node
-sudo ln -s /usr/local/lib/node /usr/lib/node
-sudo ln -s /usr/local/bin/npm /usr/bin/npm
 
 # ~/.ssh/config example (easily SSH to host with "ssh example")
 # Host example
@@ -163,6 +161,9 @@ nettop
 
 # Like top, but for disk I/O
 iotop
+
+# Like top
+htop
 
 # Convert PNG image sequence (image-000.png) to H.264 using ffmpeg
 ffmpeg -i ./image-%03d.png -f mp4 -vcodec libx264 -pix_fmt yuv420p <filename>.mp4
