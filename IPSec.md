@@ -20,7 +20,7 @@ $ sudo make install
 $ systemctl enable ipsec.service
 ```
 
-Enable kernel IP packet forwarding and disable ICP redirects by adding the below.
+Enable kernel IP packet forwarding and disable ICMP redirects by adding the below.
 
 Edit `/etc/rc.local` and `sudo chmod +x /etc/rc.local` to run the following at boot:
 

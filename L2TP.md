@@ -17,7 +17,7 @@ $ iptables -t nat -A POSTROUTING -j SNAT --to-source <SERVER-IP> -o eth+
 $ sysctl -p
 ```
 
-Enable kernel IP packet forwarding and disable ICP redirects:
+Enable kernel IP packet forwarding and disable ICMP redirects:
 
 ```bash
 echo "net.ipv4.ip_forward = 1" |  tee -a /etc/sysctl.conf
