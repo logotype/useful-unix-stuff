@@ -81,6 +81,9 @@ script_dir=$(dirname $(echo $0 | sed -e "s,^\([^/]\),$(pwd)/\1,"))
 # Clear console in Node.js (*nix)
 console.log('\033[2J');
 
+# Connect to Cisco ASA devices via USB console cable
+screen /dev/tty.usbserial-a103xxxxx
+
 # 1. OpenCV: Compile with C++11
 # 2. OpenCV: Build
 CC=clang CXX=clang++ CFLAGS='-m64' CXXFLAGS='-std=c++0x -stdlib=libc++ -m64 -Wno-c++11-narrowing' cmake -G "Unix Makefiles" -D CMAKE_INSTALL_PREFIX=/Users/<username>/Library/Developer/opencv/ -D WITH_QUICKTIME=OFF -D BUILD_EXAMPLES=OFF -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_CARBON=OFF -D CMAKE_OSX_ARCHITECTURES=x86_64 -D BUILD_PERF_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D BUILD_opencv_legacy=NO ..
@@ -167,3 +170,7 @@ htop
 
 # Convert PNG image sequence (image-000.png) to H.264 using ffmpeg
 ffmpeg -i ./image-%03d.png -f mp4 -vcodec libx264 -pix_fmt yuv420p <filename>.mp4
+
+# AWS S3: Get total size and number of files of bucket
+aws s3api list-objects --bucket <bucket_name> --output json --query "[sum(Contents[].Size), length(Contents[])]"
+

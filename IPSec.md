@@ -1,4 +1,4 @@
-Create IPSec VPN server (Ubuntu 15.04 Vivid Vervet)
+Create IPSec VPN server (Ubuntu Server 16.04 LTS)
 ----------------------
 
 _Replace **`<SERVER-IP>`** with your servers external, public IP._
@@ -6,18 +6,19 @@ _Replace **`<SERVER-IP>`** with your servers external, public IP._
 Install dependencies:
 
 ```bash
-$ sudo apt-get install libnss3-dev libnspr4-dev pkg-config libpam-dev libcap-ng-dev libcap-ng-utils libselinux-dev libcurl4-nss-dev libgmp3-dev flex bison gcc make libunbound-dev libnss3-tools libevent-dev xmlto
+$ export USE_FIPSCHECK=false
+$ sudo apt-get install libnss3-dev libnspr4-dev pkg-config libpam-dev libcap-ng-dev libcap-ng-utils libselinux-dev libcurl3-nss-dev flex bison gcc make libunbound-dev libnss3-tools libevent-dev xmlto libsystemd-dev
 ```
 
 Download Libreswan, unpack and compile:
 
 ```bash
-$ wget https://github.com/libreswan/libreswan/archive/v3.15.tar.gz
-$ tar -xvzf v3.15.tar.gz
-$ cd libreswan-3.15/
+$ wget https://github.com/libreswan/libreswan/archive/v3.20.tar.gz
+$ tar -xvzf v3.20.tar.gz
+$ cd libreswan-3.20/
 $ make programs
 $ sudo make install
-$ systemctl enable ipsec.service
+$ sudo systemctl enable ipsec.service
 ```
 
 Enable kernel IP packet forwarding and disable ICMP redirects by adding the below.
@@ -37,10 +38,17 @@ echo 0 > /proc/sys/net/ipv4/conf/default/accept_redirects
 echo 0 > /proc/sys/net/ipv4/conf/eth0/accept_redirects
 echo 0 > /proc/sys/net/ipv4/conf/lo/accept_redirects
 
+# Disable rp_filter
+echo 0 > /proc/sys/net/ipv4/conf/all/rp_filter
+echo 0 > /proc/sys/net/ipv4/conf/default/rp_filter
+echo 0 > /proc/sys/net/ipv4/conf/eth0/rp_filter
+echo 0 > /proc/sys/net/ipv4/conf/lo/rp_filter
+echo 0 > /proc/sys/net/ipv4/conf/ip_vti0/rp_filter
+
 # Enable IPV4 forwarding
 echo 1 > /proc/sys/net/ipv4/ip_forward
 
-iptables -t nat -A POSTROUTING -j SNAT --to-source <SERVER-IP> -o eth0
+sudo iptables -t nat -A POSTROUTING -j SNAT --to-source <SERVER-IP> -o eth0
 ```
 
 Edit `/etc/ipsec.conf`:
@@ -79,3 +87,7 @@ Verify everything is okay:
 ```bash
 $ sudo ipsec verify
 ```
+
+Notes for AWS/EC2
+-----------------
+The Pluto service is listening for IKE and IKE/NAT-T on specific ports. In your Security Group, add a Custom UDP Rule for port 500 and 4500 with source 0.0.0.0/0.
