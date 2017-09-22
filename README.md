@@ -61,6 +61,12 @@ find / -name "<name>" 2> /dev/null
 # Find files containing string
 grep -Ril "<string>" ./
 
+# SHA 512 sum of file (macOS)
+openssl dgst -sha512 <file>
+
+# MD5 sum of file
+md5 <file>
+
 # ~/.ssh/config example (easily SSH to host with "ssh example")
 # Host example
 # Hostname 111.222.333.444
@@ -132,13 +138,13 @@ nmap -p3389 -P0 -sS 10.0.1.0/24 | grep "scan" | cut -d "(" -f2 | cut -d ")" -f1
 mv /dev/random /dev/chaos
 ln -s /dev/urandom /dev/random
 
-# Connect to VPN service (OSX) ref: http://superuser.com/questions/358513/start-configured-vpn-from-command-line-osx
+# Connect to VPN service (macOS) ref: http://superuser.com/questions/358513/start-configured-vpn-from-command-line-osx
 scutil --nc start <name_of_service> --user <vpn_username> --password <vpn_password>
 
 # Monitor pppd log
 tail -f /var/log/syslog | grep pppd
 
-# Bandwidth trottling, enabling 150kB/s on port 80 (removed from recent versions of OSX)
+# Bandwidth trottling, enabling 150kB/s on port 80 (removed from recent versions of macOS)
 sudo ipfw pipe 1 config bw 150KByte/s
 sudo ipfw add 1 pipe 1 src-port 80
 
@@ -163,7 +169,7 @@ cat /etc/resolv.conf
 8.8.8.8
 8.8.4.4
 
-# Like top, but for networking (built in Mac OS)
+# Like top, but for networking (built in macOS)
 nettop
 
 # Like top, but for disk I/O
