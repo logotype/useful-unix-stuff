@@ -7,20 +7,23 @@ a collection of useful unix commands/scripts/etc
 # Run the last command as root
 sudo !!
 
-# Resize EC2 root volume to actual disk size
+# Just because it's funny
+alias please='sudo'
+
+# ext2/ext3/ext4 file system resizer (e.g. resize EC2 root volume to actual disk size)
 sudo resize2fs /dev/xvda1
 
 # Mount options for /etc/fstab
 UUID=<UUID> /home/ec2-user/<some mount path> ext4 defaults,nofail 0 2
+
+# List drives
+lsblk
 
 # List drives by UUID
 ls -l /dev/disk/by-uuid
 
 # Start HTTPD at boot (CentOS)
 sudo chkconfig --levels 345 httpd on
-
-# Dump database to remote server using pipe (MySQL)
-mysqldump -u <user> -p<password> <database> | mysql --host=<server> --user=<user> --password=<password> <database>
 
 # Mirror site with wget
 wget -p -r -l4 -E -k -nH <url>
@@ -31,11 +34,17 @@ xargs -n 1 curl -O < urls.txt
 # Move many files (millions of files..)
 echo *.ext | xargs mv -t <path>
 
-# Read textfile backwards, opposite of "more"
+# Read large file quickly (faster than "more");
 less <file>
+
+# View last 100 lines of file
+tail -100 <file>
 
 # Clear contents of file
 truncate -s 0 <file>
+
+# Run programs and summarize system resource usage
+time nslookup <domain> 8.8.8.8
 
 # Redirect stdout and stderr to log file with timestamps
 ./some_script.sh 2>&1 | gawk '{ print strftime("[%Y-%m-%d %H:%M:%S]"), $0 }' >> some_script.log
@@ -93,19 +102,6 @@ console.log('\033[2J');
 
 # Connect to Cisco ASA devices via USB console cable
 screen /dev/tty.usbserial-a103xxxxx
-
-# 1. OpenCV: Compile with C++11
-# 2. OpenCV: Build
-CC=clang CXX=clang++ CFLAGS='-m64' CXXFLAGS='-std=c++0x -stdlib=libc++ -m64 -Wno-c++11-narrowing' cmake -G "Unix Makefiles" -D CMAKE_INSTALL_PREFIX=/Users/<username>/Library/Developer/opencv/ -D WITH_QUICKTIME=OFF -D BUILD_EXAMPLES=OFF -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_CARBON=OFF -D CMAKE_OSX_ARCHITECTURES=x86_64 -D BUILD_PERF_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D BUILD_opencv_legacy=NO ..
-make -j8
-
-# 1. Compile Boost C++ library with C++11 (as static)
-# 2. Compile Boost C++ library with C++11 (as static)
-./bootstrap.sh --with-toolset=clang
-./b2 toolset=clang cxxflags="-std=c++11 -stdlib=libc++" linkflags="-stdlib=libc++" link=static
-
-# Just because it's funny
-alias please='sudo'
 
 # List files displaying permissions in octal values (755 drwxr-xr-x, 644 -rw-r--r--)
 alias lso="ls -alG | awk '{k=0;for(i=0;i<=8;i++)k+=((substr(\$1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(\" %0o \",k);print}'"
