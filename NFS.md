@@ -41,3 +41,9 @@ Mount the drive:
 $ sudo mkdir /nfsdisk
 $ sudo mount <SERVER-IP>:/nfsdisk /nfsdisk
 ```
+
+Mount the drive at boot, edit `/etc/fstab`:
+
+```bash
+<SERVER-IP>:/nfsdisk /nfsdisk nfs auto,nofail,noatime,nolock,intr,tcp,actimeo=1800 0 0
+```
