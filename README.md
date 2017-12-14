@@ -4,6 +4,9 @@ useful-unix-stuff
 a collection of useful unix commands/scripts/etc
 
 ```bash
+# No password for sudo
+echo "$USER ALL=(ALL:ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers
+
 # Run the last command as root
 sudo !!
 
