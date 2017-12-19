@@ -55,6 +55,9 @@ time nslookup <domain> 8.8.8.8
 # Get User-Agents from nginx logfile
 cat <file> | grep "GET" | awk -F'"' '{print $6}' | cut -d' ' -f1 | grep -E '^[[:alnum:]]' | sort | uniq -c | sort -rn
 
+# Merge multiple files, recursively
+find . -name "<file>.<ext>" -o -name "<file>*.<ext>" | xargs cat > ./<outputfile>
+
 # Get CPU info
 grep "model name" /proc/cpuinfo
 
