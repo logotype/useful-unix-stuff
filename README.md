@@ -180,11 +180,18 @@ iotop
 # Like top
 htop
 
+# Disable ecAssessment system policy security (allow unidentified app to be started)
+sudo spctl --master-disable
+
 # Convert PNG image sequence (image-000.png) to H.264 using ffmpeg
 ffmpeg -i ./image-%03d.png -f mp4 -vcodec libx264 -pix_fmt yuv420p <filename>.mp4
 
 # AWS S3: Get total size and number of files of bucket
 aws s3api list-objects --bucket <bucket_name> --output json --query "[sum(Contents[].Size), length(Contents[])]"
+
+# SSH login without password
+ssh-keygen -t rsa -b 2048 -v
+ssh-copy-id -i ~/.ssh/<cert>.pub <user>@<server-ip>
 
 ```
 
