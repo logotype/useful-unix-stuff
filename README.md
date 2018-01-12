@@ -159,6 +159,13 @@ tcpdump -i eth0 -s 1500 port not 22 | strings | grep "frag"
 # Check current DNS servers used
 cat /etc/resolv.conf
 
+# Google public recursive DNS
+8.8.8.8
+8.8.4.4
+
+# Quad9 public recursive DNS
+9.9.9.9
+
 # Level3 public recursive DNS
 4.2.2.1
 4.2.2.2
@@ -166,10 +173,6 @@ cat /etc/resolv.conf
 4.2.2.4
 4.2.2.5
 4.2.2.6
-
-# Google public recursive DNS
-8.8.8.8
-8.8.4.4
 
 # Like top, but for networking (built in macOS)
 nettop
@@ -192,6 +195,9 @@ aws s3api list-objects --bucket <bucket_name> --output json --query "[sum(Conten
 # SSH login without password
 ssh-keygen -t rsa -b 2048 -v
 ssh-copy-id -i ~/.ssh/<cert>.pub <user>@<server-ip>
+
+# xenserver start all hosts
+xe vm-start --multiple
 
 ```
 
