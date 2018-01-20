@@ -190,7 +190,7 @@ sudo spctl --master-disable
 ffmpeg -i ./image-%03d.png -f mp4 -vcodec libx264 -pix_fmt yuv420p <filename>.mp4
 
 # AWS S3: Get total size and number of files of bucket
-aws s3api list-objects --bucket <bucket_name> --output json --query "[sum(Contents[].Size), length(Contents[])]"
+aws s3 ls s3://<bucket_name> --recursive --human-readable --summarize | grep "Total Size"
 
 # SSH login without password
 ssh-keygen -t rsa -b 2048 -v
