@@ -7,51 +7,59 @@ Install dependencies:
 
 ```bash
 $ export USE_FIPSCHECK=false
-$ sudo apt-get install libnss3-dev libnspr4-dev pkg-config libpam-dev libcap-ng-dev libcap-ng-utils libselinux-dev libcurl3-nss-dev flex bison gcc make libunbound-dev libnss3-tools libevent-dev xmlto libsystemd-dev
+$ sudo apt update
+$ sudo apt upgrade
+$ sudo apt-get install libnss3-dev libnspr4-dev pkg-config libpam-dev libcap-ng-dev libcap-ng-utils libselinux-dev libcurl3-nss-dev flex bison gcc make libldns-dev libunbound-dev libnss3-tools libevent-dev xmlto libsystemd-dev
 ```
 
 Download Libreswan, unpack and compile:
 
 ```bash
-$ wget https://github.com/libreswan/libreswan/archive/v3.20.tar.gz
-$ tar -xvzf v3.20.tar.gz
+$ wget https://github.com/libreswan/libreswan/archive/v3.23.tar.gz
+$ tar -xvzf v3.23.tar.gz
 $ cd libreswan-3.20/
-$ make programs
+$ sudo make programs
 $ sudo make install
 $ sudo systemctl enable ipsec.service
 ```
 
 Enable kernel IP packet forwarding and disable ICMP redirects by adding the below.
 
-Edit `/etc/rc.local` and `sudo chmod +x /etc/rc.local` to run the following at boot:
+Edit `/etc/sysctl.conf` and `sudo sysctl -p` to reload config:
 
 ```bash
-# Disable send redirects
-echo 0 > /proc/sys/net/ipv4/conf/all/send_redirects
-echo 0 > /proc/sys/net/ipv4/conf/default/send_redirects
-echo 0 > /proc/sys/net/ipv4/conf/eth0/send_redirects
-echo 0 > /proc/sys/net/ipv4/conf/lo/send_redirects
+# Enable IPV4 forwarding
+net.ipv4.ip_forward=1
 
 # Disable accept redirects
-echo 0 > /proc/sys/net/ipv4/conf/all/accept_redirects
-echo 0 > /proc/sys/net/ipv4/conf/default/accept_redirects
-echo 0 > /proc/sys/net/ipv4/conf/eth0/accept_redirects
-echo 0 > /proc/sys/net/ipv4/conf/lo/accept_redirects
+net.ipv4.conf.all.accept_redirects=0
+net.ipv4.conf.default.accept_redirects=0
+
+# Disable send redirects
+net.ipv4.conf.all.send_redirects=0
+net.ipv4.conf.default.send_redirects=0
 
 # Disable rp_filter
-echo 0 > /proc/sys/net/ipv4/conf/all/rp_filter
-echo 0 > /proc/sys/net/ipv4/conf/default/rp_filter
-echo 0 > /proc/sys/net/ipv4/conf/eth0/rp_filter
-echo 0 > /proc/sys/net/ipv4/conf/lo/rp_filter
-echo 0 > /proc/sys/net/ipv4/conf/ip_vti0/rp_filter
+net.ipv4.conf.all.rp_filter=0
+net.ipv4.conf.default.rp_filter=0
+net.ipv4.conf.eth0.rp_filter=0
+net.ipv4.conf.lo.rp_filter=0
+net.ipv4.conf.ip_vti0.rp_filter=0
+```
 
-# Enable IPV4 forwarding
-echo 1 > /proc/sys/net/ipv4/ip_forward
+iptables config (depending on environment). Update in `/etc/rc.local` (chmod 755 and +x the file)
 
+Tested in AWS (slightly slower than SNAT):
+```bash
+sudo iptables --table nat --append POSTROUTING --jump MASQUERADE
+```
+
+Tested in Rackspace:
+```bash
 sudo iptables -t nat -A POSTROUTING -j SNAT --to-source <SERVER-IP> -o eth0
 ```
 
-Edit `/etc/ipsec.conf`:
+Edit `/etc/ipsec.d/<CONNECTION-NAME>.conf`:
 
 ```bash
 conn <CONNECTION-NAME>
@@ -65,18 +73,17 @@ conn <CONNECTION-NAME>
 	ike=aes256-sha1-modp1024
 	phase2alg=aes256-sha1
 	aggrmode=no
-	left=<SERVER-IP>
+	left=<SERVER-PRIVATE-IP>
 	leftsourceip=<SERVER-IP>
 	leftsubnet=0.0.0.0/0
 	right=%any
-	rightsubnet=10.0.1.0/24
+	rightsubnet=10.0.0.0/8
 	dpddelay=10
 	dpdtimeout=600
 	dpdaction=clear
-	forceencaps=yes
 ```
 
-Edit `/etc/ipsec.secrets` to add the shared secret:
+Edit `/etc/ipsec.d/<CONNECTION-NAME>.secrets` to add the shared secret:
 
 ```bash
 <SERVER-IP>  %any:   PSK "**some-secret-string-here**"
@@ -91,3 +98,4 @@ $ sudo ipsec verify
 Notes for AWS/EC2
 -----------------
 The Pluto service is listening for IKE and IKE/NAT-T on specific ports. In your Security Group, add a Custom UDP Rule for port 500 and 4500 with source 0.0.0.0/0.
+For communication between EC2 hosts, make sure that hosts are either in same Security Group, or add rule to allow inbound traffic from the same subnet. 
