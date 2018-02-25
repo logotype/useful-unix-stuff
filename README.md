@@ -58,6 +58,9 @@ cat <file> | grep "GET" | awk -F'"' '{print $6}' | cut -d' ' -f1 | grep -E '^[[:
 # Merge multiple files, recursively
 find . -name "<file>.<ext>" -o -name "<file>*.<ext>" | xargs cat > ./<outputfile>
 
+# Check how long a process has been running (change etime to etimes to format as seconds)
+ps -o etime= -p "<PID>"
+
 # Get CPU info
 grep "model name" /proc/cpuinfo
 
@@ -92,7 +95,10 @@ md5 <file>
 scp example:/some/path/on/remove/server/file.ext localfile.ext
 
 # rsync from local to remote host, excluding mac files (<example> is the Host in ~/.ssh/config)
-rsync -rave "ssh -i /Users/$USER/.ssh/example.pem" --exclude ".DS_Store" -r . example:~/some-directory-here
+rsync -rave "ssh -i /Users/$USER/.ssh/example.pem" --exclude ".DS_Store" -r . example-host-in-ssh-conf:~/some-directory-here
+
+# rsync from remote to local host, in archive mode (symlinks, modified date, permissions, etc)
+rsync -a --ignore-existing --exclude="lost+found" example-host-in-ssh-conf:~/some-directory-here . --progress
 
 # Last 100 most used commands
 history | sed "s/^[0-9 ]*//" | sed "s/ *| */\n/g" | awk '{print $1}' | sort | uniq -c | sort -rn | head -n 100
@@ -145,6 +151,9 @@ scutil --nc start <name_of_service> --user <vpn_username> --password <vpn_passwo
 
 # Monitor pppd log
 tail -f /var/log/syslog | grep pppd
+
+# Monitor libreswan/IPSec log
+sudo journalctl -f -u ipsec
 
 # Bandwidth trottling, enabling 150kB/s on port 80 (removed from recent versions of macOS)
 sudo ipfw pipe 1 config bw 150KByte/s
