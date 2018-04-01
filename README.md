@@ -172,6 +172,10 @@ cat /etc/resolv.conf
 8.8.8.8
 8.8.4.4
 
+# Cloudflare public recursive DNS
+1.1.1.1
+1.0.0.1
+
 # Quad9 public recursive DNS
 9.9.9.9
 
