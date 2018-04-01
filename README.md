@@ -169,15 +169,16 @@ tcpdump -i eth0 -s 1500 port not 22 | strings | grep "frag"
 cat /etc/resolv.conf
 
 # Google public recursive DNS
-8.8.8.8
-8.8.4.4
+8.8.8.8 (2001:4860:4860::8888)
+8.8.4.4 (2001:4860:4860::8844)
 
 # Cloudflare public recursive DNS
-1.1.1.1
-1.0.0.1
+1.1.1.1 (2606:4700:4700::1111)
+1.0.0.1 (2606:4700:4700::1001)
 
 # Quad9 public recursive DNS
-9.9.9.9
+9.9.9.9 (2620:fe::fe)
+149.112.112.112
 
 # Level3 public recursive DNS
 4.2.2.1
